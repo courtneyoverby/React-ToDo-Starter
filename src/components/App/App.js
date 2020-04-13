@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import "./App.css";
 import axios from "axios";
-import TaskList from "co/TaskList/TaskList";
+import TaskList from "../TaskList/TaskList";
 
 class App extends Component {
+  state = {
+    taskList: [],
+  };
+
   componentDidMount() {
     this.getTasks();
   }
@@ -12,7 +16,15 @@ class App extends Component {
     axios
       .get("/tasks")
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
+        this.setState(
+          {
+            taskList: response.data,
+          },
+          () => {
+            console.log(this.state);
+          }
+        );
       })
       .catch((err) => console.warn(err));
   }
@@ -21,7 +33,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Tasks</h1>
-        <TaskList />
+        <TaskList taskList={this.state.taskList} />
       </div>
     );
   }
